@@ -1,0 +1,62 @@
+getprop("ro.product.device") == "dorado" || getprop("ro.product.name") == "dorado" ||
+    abort("This package is for \"dorado\" devices; this is a \"" + getprop("ro.product.device") + "\".");
+
+package_extract_dir("scripts", "/tmp/scripts");
+set_metadata_recursive("/tmp/scripts", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+
+ui_print(" ");
+ui_print("Target: verizon/dorado/dorado:7.1.1/N7G75P/3948116:user/release-keys");
+ui_print(" ");
+
+ui_print("Writing system image unconditionally...");
+package_extract_file("system.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
+  abort("E1001: Failed to write system image, is system mounted???");
+ui_print("System image written.");
+ui_print("Writing boot image unconditionally...")
+package_extract_file("boot.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
+  abort("E1001: Failed to write boot image.");
+set_progress(0.3);
+
+# ifelse(is_mounted("/modem"), unmount("/modem"));
+# ifelse(is_mounted("/system"), unmount("/system"));
+# ifelse(is_mounted("/oem"), unmount("/oem"));
+# double check these
+
+# Magisk installation
+if file_getprop("/tmp/aroma/installopts.prop","item.1.1") == "1" then
+package_extract_dir("magisk", "/tmp/magisk");
+run_program("/tmp/scripts/busybox", "unzip", "/tmp/magisk/magisk.zip", "META-INF/com/google/android/*", "-d", "/tmp/magisk");
+run_program("/tmp/magisk", "sh", "/tmp/magisk/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/magisk/magisk.zip");
+set_progress(0.5);
+endif;
+
+# install VZW apps
+if file_getprop("/tmp/aroma/installopts.prop","item.1.3") == "1" then
+    ui_print("Installing VZW apps ...");
+    package_extract_file("vzw/ChargingApp-release.apk", "/system/priv-app/ChargingApp-release.apk");
+package_extract_file("vzw/VZMessages-wear.apk", "/system/priv-app/VZMessages-wear/VZMessages-wear.apk");
+package_extract_dir("vzw/lib", "/system/priv-app/VZMessages-wear/lib");
+package_extract_file("vzw/jumpstart-wear.apk", "/system/priv-app/jumpstart-wear/jumpstart-wear.apk");
+package_extract_file("vzw/MyVerizon.apk", "/system/priv-app/MyVerizon/MyVerizon.apk");
+# chmod these to match the rest of /system
+
+    ui_print(" ");
+    set_progress(0.7);
+endif;
+
+# bootanimation
+if file_getprop("/tmp/aroma/installopts.prop","item.1.4") == "1" then
+    delete_recursive(
+"/system/media/bootanimation.zip"
+);
+system_extract_file("bootanimation.zip", "/system/media/bootanimation.zip")
+# chmod
+
+set_progress(0.9);
+
+endif;
+
+# unmount("/system");
+
+# finish
+show_progress(1, 0);
