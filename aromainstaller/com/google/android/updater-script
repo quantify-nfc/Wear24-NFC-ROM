@@ -56,6 +56,8 @@ set_progress(0.9);
 
 endif;
 
+ui_print("OUR BUILDS DO NOT INCLUDE THE KERNEL. Ensure you have flashed the boot image as well, otherwise NFC WILL NOT work.")
+
 # unmount("/system");
 
 # finish
