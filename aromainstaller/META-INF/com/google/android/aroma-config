@@ -21,7 +21,7 @@ ini_set("dp","2"); #-- MDPI ( 340x480 / HVGA )
 # Initializing Information
 #
 
-ini_set("rom_name",             "Wear24 NFC ROM");
+ini_set("rom_name", "Quantify | Wear24 ROM Project");
 
 ##
 # Font Selection
@@ -46,7 +46,7 @@ checkbox(
     "Installation options",
   
   # Sub Title
-    "Wear24 NFC ROM",
+    "Quantify",
  
   # Icon
     "@update",
