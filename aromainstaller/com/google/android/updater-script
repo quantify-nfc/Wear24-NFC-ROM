@@ -12,21 +12,20 @@ ui_print("Writing system image unconditionally...");
 package_extract_file("system.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
   abort("E1001: Failed to write system image, is system mounted???");
 ui_print("System image written.");
-ui_print("Writing boot image unconditionally...")
-package_extract_file("boot.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
-  abort("E1001: Failed to write boot image.");
 set_progress(0.3);
 
-# Magisk installation
-if file_getprop("/tmp/aroma/installopts.prop","item.1.1") == "1" then
-package_extract_dir("magisk", "/tmp/magisk");
-run_program("/tmp/scripts/busybox", "unzip", "/tmp/magisk/magisk.zip", "META-INF/com/google/android/*", "-d", "/tmp/magisk");
-run_program("/tmp/magisk", "sh", "/tmp/magisk/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/magisk/magisk.zip");
+# flash boot image
+if file_getprop("/tmp/aeoma/installopts.prop","item.1.3") == "1" then
+ui_print("Writing boot image unconditionally...")
+package_extract_file("boot.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
+  abort("E1001: Failed to write boot image. It may not have been included in the AROMA zip.");
+ui.print("Boot image written.")
 set_progress(0.5);
 endif;
 
+
 # install VZW apps
-if file_getprop("/tmp/aroma/installopts.prop","item.1.3") == "1" then
+if file_getprop("/tmp/aroma/installopts.prop","item.1.1") == "1" then
     ui_print("Installing VZW apps ...");
     package_extract_file("vzw/ChargingApp-release.apk", "/system/priv-app/ChargingApp-release/ChargingApp-release.apk");
 package_extract_file("vzw/VZMessages-wear.apk", "/system/priv-app/VZMessages-wear/VZMessages-wear.apk");
@@ -44,7 +43,7 @@ run_program("/system/bin/chmod", "0644", "/system/priv-app/MyVerizon/MyVerizon.a
 endif;
 
 # bootanimation
-if file_getprop("/tmp/aroma/installopts.prop","item.1.4") == "1" then
+if file_getprop("/tmp/aroma/installopts.prop","item.1.2") == "1" then
     delete_recursive(
 "/system/media/bootanimation.zip"
 );
@@ -55,7 +54,7 @@ set_progress(0.9);
 
 endif;
 
-ui_print("OUR BUILDS DO NOT INCLUDE THE KERNEL. Ensure you have flashed the boot image as well, otherwise NFC WILL NOT work.")
+ui_print("REMINDER: Magisk is not included. You need to flash/install it yourself to pass SafetyNet.");
 
 # unmount("/system");
 
