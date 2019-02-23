@@ -36,6 +36,13 @@ run_program("/system/bin/chmod", "-R", "0644", "/system/priv-app/VZMessages-wear
 run_program("/system/bin/chmod", "0644", "/system/priv-app/jumpstart-wear/jumpstart-wear.apk");
 run_program("/system/bin/chmod", "0644", "/system/priv-app/ChargingApp-release/ChargingApp-release.apk");
 run_program("/system/bin/chmod", "0644", "/system/priv-app/MyVerizon/MyVerizon.apk");
+endif;
+if file_getprop("/tmp/aroma/installopts.prop","item.1.1") == "0" then
+delete_recursive("/system/priv-app/ChargingApp-release");
+delete_recursive("/system/priv-app/VZMessages-wear");
+delete_recursive("/system/priv-app/jumpstart-wear");
+delete_recursive("/system/priv-app/MyVerizon");
+endif;
 
 
     ui_print(" ");
