@@ -61,18 +61,29 @@ checkbox(
     #-- group 1
     "Main options",   "Default is recommended.",  2
     #-- item.1.1
-    ,"Magisk",       "Install Magisk by default, so that SafetyNet will pass.", 1
+    ,"Install Verizon Apps", "Install Verizon ChargingApp, Jumpstart, VZMessages and MyVerizon. If you use Verizon LTE, check this.",           0      
     #-- item.1.2
-    ,"Change ro.build.fingerprint",        "Change to a known-good build fingerprint to pass SafetyNet.", 3      
-    #-- item.1.3
-    ,"Install Verizon Apps", "Install Verizon ChargingApp, Jumpstart, VZMessages and MyVerizon.",           0      
-    #-- item.1.4
     ,"Use new bootanimation",   "Install new Wear OS bootanimation, instead of old Android Wear animation.",                      1      
-  
+    #-- item.1.3
+    ,"Flash boot image",   "Flash custom kernel with NFC support. Unless you have built the ROM yourself, leave this checked!",                      1      
+    #-- item.1.4
+    ,"Use new launcher",   "Use ClockworkLauncher modified with new features. EXPERIMENTAL",                      3      
+
     #--------[ Initial Value = 0: Unselected, 1: Selected, 2: Group Item, 3: Not Visible ]---------#
 );
+ #-- Show Alert
+  alert(
+    #-- Alert Title
+      "SAFETYNET ADVISORY",
+    
+    #-- Alert Text
+      "This ROM does not come with a patched boot image/ramdisk for Magisk. You will need to install the Magisk zip and Magisk Installer yourself!",
+    
+    #-- Alert Icon
+      "@alert"
+  );
 
-# Do we need 1.2? There appears to be no line in potter's script to enable it.
+
 # Installation UI
 
 ini_set("text_next", "Install Now");
