@@ -19,6 +19,16 @@ echo "Converting sparse image to .new.dat"
 ./tools/img2sdat/img2sdat.py out/system.img.new -o aromainstaller #output system.new.dat to aroma zip for building
 rm -f out/system.img.new
 
+if [ ! -f aromainstaller/boot.img ]; then
+    echo "Boot image was not found at build time, AROMA does not include kernel."
+    echo "The custom kernel will need to be flashed for NFC to work."
+    echo "It is recommended to fix this by placing your kernel into aromainstaller and renaming it to boot.img"
+    echo "In order for AROMA to successfully flash your system, ensure the boot image option is unchecked."
+else
+    echo "Boot image was built into AROMA sucessfully. No additional flash is required."
+    echo "Ensure the boot image option is checked in AROMA to flash it."
+fi
+
 cd aromainstaller
 echo "Zipping AROMA..."
 zip -r ../Quantify-$DATE_TIME-$branch.zip *
