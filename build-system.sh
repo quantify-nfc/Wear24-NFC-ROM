@@ -20,17 +20,18 @@ echo "Converting sparse image to .new.dat"
 rm -f out/system.img.new
 
 if [ ! -f aromainstaller/boot.img ]; then
-    echo -e "\033[31;7mThe boot image was not found in aromainstaller.\e[0m";
+    echo -e "\033[31;7mThe boot image was not found in the zip dir.\e[0m";
     echo -e "\033[31;7mThe custom kernel will need to be manually flashed so NFC will work.\e[0m";
-    echo -e "\033[31;7mIt is recommended to fix this by placing your kernel into aromainstaller and renaming it to boot.img\e[0m"
-    echo -e "\033[31;7mIn order for AROMA to successfully flash your system, ensure the boot image option is unchecked!\e[0m"
+    echo -e "\033[31;7mIt is recommended to fix this by placing your kernel into the zip dir and renaming it to boot.img\e[0m"
+    echo -e "\033[31;7mIn order for the zip to successfully flash your system, ensure the boot image option is disabled!\e[0m"
+echo -e  "\033[31;7mFor more info, please see the README. If you are seeing this warning on a release, contact JaredTamana or davwheat.\e[0m"
 else
     echo "Boot image was built into AROMA sucessfully. No additional flash is required."
     echo "Ensure the boot image option is checked in AROMA to flash it."
 fi
 
-cd aromainstaller
-echo "Zipping AROMA..."
+cd "zip"
+echo "Zipping..."
 zip -q -r ../Quantify-$DATE_TIME-$branch.zip *
 cd ..
-echo "ROM ZIP can be found at $(pwd)"
+echo "ROM ZIP can be found at $(pwd)/Quantify-$DATE_TIME-$branch"
