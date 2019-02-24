@@ -1,8 +1,12 @@
 getprop("ro.product.device") == "dorado" || getprop("ro.product.name") == "dorado" ||
     abort("This package is for \"dorado\" devices; this is a \"" + getprop("ro.product.device") + "\".");
 
+# fix this in the future. How? idfk, let's look at what other ROM devs have done
 package_extract_dir("scripts", "/tmp/scripts");
 package_extract_file("boot.img", "/tmp/boot.img");
+package_extract_file("system.transfer.list", "/tmp/system.transfer.list");
+package_extract_file("system.new.dat", "/tmp/system.new.dat");
+package_extract_file("system.patch.dat", "/tmp/system.patch.dat");
 
 set_metadata_recursive("/tmp/scripts", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
 
@@ -11,11 +15,13 @@ ui_print("Target: verizon/dorado/dorado:7.1.1/N7G75P/3948116:user/release-keys")
 ui_print(" ");
 ui_print("Mounting system partition");
 mount("ext4", "EMMC", "/dev/block/platform/soc/7824900.sdhci/by-name/system", "/system") || 
-abort("E1001: Failed to mount system partition. Something has gone terribly, terribly wrong, and we swear it wasn't our fault.");
+abort("Error JD-mountsys: Failed to mount system partition. Something has gone terribly, terribly wrong, and we swear it wasn't our fault.");
 
 ui_print("Writing system image unconditionally...");
-package_extract_file("system.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
-  abort("E1001: Failed to write system image, is system mounted???");
+# package_extract_file("system.img", "/dev/block/platform/soc/7824900.sdhci/by-name/system") ||
+#  abort("E1001: Failed to write system image, is system mounted???");
+block_image_update("/dev/block/platform/soc/7824900.sdhci/by-name/system", package_extract_file("system.transfer.list"), "system.new.dat", "system.patch.dat") || 
+abort("Error JD-systemblock: Failed to write system image.");
 ui_print("System image written.");
 set_progress(0.3);
 
