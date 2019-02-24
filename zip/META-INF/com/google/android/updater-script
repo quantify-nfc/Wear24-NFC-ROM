@@ -26,7 +26,7 @@ ui_print("System image written.");
 set_progress(0.3);
 
 ui_print("Starting installer script.");
-run_program(/tmp/scripts/install.sh);
+run_program(/tmp/scripts/install.sh) || abort("Error JD-installsh: The install script failed. Note what ui_prints were made.");
 
 ui_print("REMINDER: Magisk is not included. You need to flash/install it yourself to pass SafetyNet.");
 
