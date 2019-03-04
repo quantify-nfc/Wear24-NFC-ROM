@@ -43,7 +43,7 @@ VZWAPPSD=true
 
 
 # Change this path to wherever the keycheck binary is located in your installer
-KEYCHECK=$INSTALLER/keycheck
+KEYCHECK=$/tmp/scripts/keycheck
 chmod 755 $KEYCHECK
 # get keycheck binary
 
@@ -51,15 +51,17 @@ chmod 755 $KEYCHECK
 keytest() {
     ui_print "- Power Key Test -"
     ui_print "   Press the Power Key:"
-    (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > $INSTALLER/events) || return 1
+    (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > /tmp/events) || return 1
+    rm -f /tmp/events
     return 0
 }
 
 choose() {
     #note from chainfire @xda-developers: getevent behaves weird when piped, and busybox grep likes that even less than toolbox/toybox grep
 
-    timeout 5 (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > $INSTALLER/events);
-    if (`cat $INSTALLER/events 2>/dev/null | /system/bin/grep KEY_POWER >/dev/null`); then
+    timeout 5 (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > /tmp/events)
+    if (`cat /tmp/events 2>/dev/null | /system/bin/grep KEY_POWER >/dev/null`); then
+	rm -f /tmp/events
         return false
     else
         return true
@@ -114,16 +116,19 @@ else
 fi
 
 if $NEWBOOT; then
-    dd if=/tmp/boot.img of=
+    ui_print "Flashing boot image..."
+    dd if=/tmp/boot.img of=/dev/block/platform/soc/7824900.sdhci/by-name/system || abort "Failed to flash boot image..."
 fi
 
 if $NEWANIM; then
-    # mv -f /system/media/whatever
+    ui_print "Moving new boot animation..."
+    mv -f /tmp/bootanimation.zip /system/media/bootanimation.zip || ui_print "Couldn't overwrite boot image, continuing..." && break
+    chmod 0644 /system/media/bootanimation.zip || ui_print "Couldn't change permissions for boot animation..."
 fi
 
 if $VZWAPPS=false; then
-    rm -rf /system/priv-app/ChargingApp-release
-    rm -rf /system/priv-app/jumpstart-wear
-    rm -rf /system/priv-app/MyVerizon
-    rm -rf /system/priv-app/VZMessages-wear
+    rm -rf /system/priv-app/ChargingApp-release || ui_print "Couldn't remove ChargingApp"
+    rm -rf /system/priv-app/jumpstart-wear "Couldn't remove jumpstart"
+    rm -rf /system/priv-app/MyVerizon "Couldn't remove MyVerizon"
+    rm -rf /system/priv-app/VZMessages-wear "Couldn't remove VZMessages"
 fi
