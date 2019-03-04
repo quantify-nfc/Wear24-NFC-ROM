@@ -4,9 +4,9 @@ getprop("ro.product.device") == "dorado" || getprop("ro.product.name") == "dorad
 # fix this in the future. How? idfk, let's look at what other ROM devs have done
 package_extract_dir("scripts", "/tmp/scripts");
 package_extract_file("boot.img", "/tmp/boot.img");
-package_extract_file("system.transfer.list", "/tmp/system.transfer.list");
-package_extract_file("system.new.dat", "/tmp/system.new.dat");
-package_extract_file("system.patch.dat", "/tmp/system.patch.dat");
+# package_extract_file("system.transfer.list", "/tmp/system.transfer.list");
+# package_extract_file("system.new.dat", "/tmp/system.new.dat");
+# package_extract_file("system.patch.dat", "/tmp/system.patch.dat");
 
 set_metadata_recursive("/tmp/scripts", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
 
