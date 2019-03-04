@@ -15,7 +15,7 @@ export systemdirsize=$(du -sb system-deodexed-stock | cut -f1)
 
 mkdir out
 echo "Making sparse image to out using make_ext4fs"
-make_ext4fs -S file_contexts -l $systemdirsize -a system system.img.new system-deodexed-stock #SHOULD be a sparse image!
+make_ext4fs -S file_contexts.bin -l $systemdirsize -a system system.img.new #SHOULD be a sparse image!
 
 echo "Converting sparse image to .new.dat"
 ./tools/img2sdat/img2sdat.py out/system.img.new -o "zip" #output system.new.dat to zip for building
