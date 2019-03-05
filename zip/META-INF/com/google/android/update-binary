@@ -231,12 +231,9 @@ if ([[ file_getprop /build.prop ro.product.device != "dorado"]] && [[ file_getpr
     abort [This package is for \"dorado\" devices.]
 fi
 
-# fix this in the future. How? idfk, let's look at what other ROM devs have done
-package_extract_dir scripts /tmp/scripts
+
 package_extract_file boot.img /tmp/boot.img
 package_extract_file bootanimation.zip /tmp/bootanimation.zip
-
-set_metadata_recursive 0 7 5 5 /tmp/scripts
 
 ui_print " "
 ui_print "Target: verizon/dorado/dorado:7.1.1/N7G75P/3948116:user/release-keys"
