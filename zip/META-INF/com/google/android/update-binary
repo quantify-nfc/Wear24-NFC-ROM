@@ -222,11 +222,39 @@ restore_files() {
   done;
 }
 
-#!/system/bin/sh
+echo "----------------"
+echo "Quantify Install Script"
+echo "----------------"
+
+if ([[ file_getprop /build.prop ro.product.device != "dorado"]] && [[ file_getprop /build.prop ro.product.name != "dorado" ]]); then
+    echo "This is a $(file_getprop /build.prop ro.product.device)."
+    abort [This package is for \"dorado\" devices.]
+fi
+
+# fix this in the future. How? idfk, let's look at what other ROM devs have done
+package_extract_dir scripts /tmp/scripts
+package_extract_file boot.img /tmp/boot.img
+package_extract_file bootanimation.zip /tmp/bootanimation.zip
+
+set_metadata_recursive 0 7 5 5 /tmp/scripts
+
+ui_print " "
+ui_print "Target: verizon/dorado/dorado:7.1.1/N7G75P/3948116:user/release-keys"
+ui_print " "
+ui_print "Mounting system partition"
+mount /system
+mount /data
+mount -o rw,remount /system
+mount -o rw,remount /system /system
+
+ui_print "Writing system image unconditionally..."
+unzip -p "$ZIPFILE" "system.img" | dd of="/dev/block/platform/soc/7824900.sdhci/by-name/system" || abort Error JD-systemblock: Failed to write system image...] # this is dubious lmao
+ui_print "System image written."
+set_progress 0.3
 
 # Get option from zip name if applicable
 case $(basename "$ZIP") in
-    *nonewboot*|*NoNewBoot*|*NONEWBOOT*)#
+    *nonewboot*|*NoNewBoot*|*NONEWBOOT*)
         NEWBOOT=false
         NEWBOOTD=false
         ;;
@@ -339,3 +367,12 @@ if $VZWAPPS=false; then
     rm -rf /system/priv-app/MyVerizon "Couldn't remove MyVerizon"
     rm -rf /system/priv-app/VZMessages-wear "Couldn't remove VZMessages"
 fi
+
+ui_print "REMINDER: Magisk is not included. You need to flash/install it yourself to pass SafetyNet."
+
+ui_print "- Unmounting /system and /data"
+umount /system
+umount /data
+
+# finish
+set_progress 1
