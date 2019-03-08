@@ -59,7 +59,7 @@ keytest() {
 choose() {
     #note from chainfire @xda-developers: getevent behaves weird when piped, and busybox grep likes that even less than toolbox/toybox grep
 
-    timeout 5 (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > /tmp/events)
+    timeout 5 /system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > /tmp/events
     if (`cat /tmp/events 2>/dev/null | /system/bin/grep KEY_POWER >/dev/null`); then
 	rm -f /tmp/events
         return false
