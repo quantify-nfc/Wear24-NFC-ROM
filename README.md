@@ -26,10 +26,6 @@ This repository has three main branches: `master`, `nfc` and `release`. These br
 
 ## Building
 
-`android-tools-fsutils` is needed for `make_ext4fs`!
-
-`sudo apt install android-tools-fsutils`
-
 ### Automatic
 
 Extract the existing `system.img`, add our own files, and rebuild using `./build.sh`.
