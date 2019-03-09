@@ -27,7 +27,7 @@ if [ ! -f "zip/boot.img" ]; then
     echo -e "\033[31;7mThe custom kernel will need to be manually flashed so NFC will work.\e[0m";
     echo -e "\033[31;7mIt is recommended to fix this by placing your kernel into the zip dir and renaming it to boot.img\e[0m"
     echo -e "\033[31;7mIn order for the zip to successfully flash your system, ensure the boot image option is disabled!\e[0m"
-    echo -e  "\033[31;7mFor more info, please see the README. If you are seeing this warning on a release, contact JaredTamana or davwheat.\e[0m"
+    echo -e  "\033[31;7mFor more info, please see the README.\e[0m"
 else
     echo "Boot image was built into the zip sucessfully. No additional flash is required."
     echo "Ensure the boot image option is enabled in the installer to flash it (ie don't press the button)."
