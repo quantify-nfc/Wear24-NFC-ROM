@@ -16,11 +16,11 @@ export totalsize=$(($systemdirsize + 100000000))
 
 mkdir out
 echo "Making sparse image to out using make_ext4fs"
-make_ext4fs -l $totalsize -a system out/system.img.new system-deodexed-stock #NOT a sparse image!
+make_ext4fs -l $totalsize -a system "zip/system.img" system-deodexed-stock #NOT a sparse image!
 
-echo "Converting sparse image to .new.dat"
-./tools/img2sdat/img2sdat.py out/system.img.new -o "zip" #output system.new.dat to zip for building
-rm -f out/system.img.new
+#echo "Converting sparse image to .new.dat"
+#./tools/img2sdat/img2sdat.py out/system.img.new -o "zip" #output system.new.dat to zip for building
+#rm -f out/system.img.new
 
 if [ ! -f "zip/boot.img" ]; then
     echo -e "\033[31;7mThe boot image was not found in the zip dir.\e[0m";
