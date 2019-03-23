@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- These are configurations that should exist on Google's own Nexus and GPe devices. -->
+<config>
+    <allow-in-power-save package="com.google.android.gms" />
+    <allow-in-power-save package="com.google.android.wearable.ambient" />
+    <allow-in-power-save package="com.google.android.apps.wearable.cellbroadcast" />
+
+    <allow-in-power-save-except-idle package="com.android.vending" />
+</config>
+
