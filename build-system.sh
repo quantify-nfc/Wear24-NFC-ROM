@@ -15,11 +15,14 @@ export systemdirsize=$(du -sb system-deodexed-stock | cut -f1)
 export totalsize=$(($systemdirsize + 100000000))
 
 mkdir out
-echo "Making sparse image to out using make_ext4fs"
-./tools/make_ext4fs -S file_contexts.bin -l $totalsize -a system out/system.img.new system-deodexed-stock #SHOULD be a sparse image!
+echo "Making image to out using make_ext4fs"
+./tools/make_ext4fs -S file_contexts -l $totalsize -a system out/system.img.new system-deodexed-stock #SHOULD be a sparse image!
+
+echo "Converting to sparse image using img2simg"
+img2simg out/system.img.new out/system.simg.new
 
 echo "Converting sparse image to .new.dat"
-./tools/img2sdat/img2sdat.py out/system.img.new -o "zip" #output system.new.dat to zip for building
+./tools/img2sdat/img2sdat.py out/system.simg.new -o "zip" #output system.new.dat to zip for building
 rm -f out/system.img.new
 
 if [ ! -f "zip/boot.img" ]; then
