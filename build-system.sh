@@ -38,6 +38,6 @@ fi
 
 cd "zip"
 echo "Zipping..."
-zip -q -r ../Quantify-$DATE_TIME-$branch.zip *
+zip -q -r ../Quantify-ROM-$DATE_TIME-$branch.zip *
 cd ..
-echo "ROM ZIP can be found at $(pwd)/Quantify-$DATE_TIME-$branch"
+echo "ROM ZIP can be found at $(pwd)/Quantify-ROM-$DATE_TIME-$branch"
