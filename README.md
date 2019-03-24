@@ -26,6 +26,8 @@ This repository has three main branches: `master`, `nfc` and `release`. These br
 
 ## Building
 
+You need Python 3.7+ installed to build the ROM. You can install this (on Ubuntu) using `sudo apt install python3.7`.
+
 ### Automatic
 
 Extract the existing `system.img`, add our own files, and rebuild using `./build.sh`.
