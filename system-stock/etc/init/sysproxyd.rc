@@ -1,3 +1,0 @@
-service sysproxyd /system/bin/sysproxyd
-    class main
-    oneshot
