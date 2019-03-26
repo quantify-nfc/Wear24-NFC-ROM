@@ -11,6 +11,9 @@ export branch=$(git symbolic-ref --short HEAD)
 echo "Copying new/modified files to stock directory..."
 yes | cp -af system-new/* system-deodexed-stock/ # copy altered files to stock dir
 
+echo "Deleting files from stock directory..."
+./file-deletion.sh
+
 export systemdirsize=$(du -sb system-deodexed-stock | cut -f1)
 export totalsize=$(($systemdirsize + 100000000))
 
