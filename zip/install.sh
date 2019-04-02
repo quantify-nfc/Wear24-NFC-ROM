@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/sbin/sh
 
 # Get option from zip name if applicable
 case $(basename "$ZIP") in
@@ -45,16 +45,16 @@ choose() {
     #note from chainfire @xda-developers: getevent behaves weird when piped, and busybox grep likes that even less than toolbox/toybox grep
 
     timeout 5 /system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > /tmp/events
-    if (`cat /tmp/events 2>/dev/null | /system/bin/grep KEY_POWER >/dev/null`); then
+    if (cat /tmp/events 2>/dev/null | /system/bin/grep KEY_POWER >/dev/null); then
 	rm -f /tmp/events
-        return false
+        return 1
     else
-        return true
+        return 0
     fi
 }
 
 ui_print " "
-if [[ $NEWBOOTD == true ]]; then
+if [ $NEWBOOTD = true ]; then
     ui_print " "
     ui_print "- Select Option -"
     ui_print "   Push the Power button to NOT flash the custom kernel..."
@@ -62,30 +62,30 @@ if [[ $NEWBOOTD == true ]]; then
     ui_print "   Otherwise, wait for timeout."
     FUNCTION=choose
 
-    if [[ $FUNCTION == false ]]; then
-        $NEWBOOT=false
+    if [ $FUNCTION = 1 ]; then
+        NEWBOOT=false
     fi
 else
     ui_print "Using parameter NEWBOOT from ZIP name..."
 fi
 
 ui_print " "
-if [[ $NEWANIMD == true ]]; then
+if [ $NEWANIMD = true ]; then
     ui_print " "
     ui_print "- Select Option -"
     ui_print "   Push the Power button to NOT flash the new boot animation..."
     ui_print "   Otherwise, wait for timeout."
     FUNCTION=choose
 
-    if [[ $FUNCTION == false ]]; then
-        $NEWANIM=false
+    if [ $FUNCTION = 1 ]; then
+        NEWANIM=false
     fi
 else
     ui_print "Using parameter NEWANIM from ZIP name..."
 fi
 
 ui_print " "
-if [[ $VZWAPPSD == true ]]; then
+if [ $VZWAPPSD = true ]; then
     ui_print " "
     ui_print "- Select Option -"
     ui_print "   Push the Power button to install Verzion Apps..."
@@ -93,25 +93,25 @@ if [[ $VZWAPPSD == true ]]; then
     ui_print "   Otherwise, wait for timeout."
     FUNCTION=choose
 
-    if [[ $FUNCTION == false ]]; then
-        $VZWAPPS=true
+    if [ $FUNCTION = 1 ]; then
+        VZWAPPS=true
     fi
 else
     ui_print "Using parameter VZWAPPS from ZIP name..."
 fi
 
-if $NEWBOOT; then
+if [ $NEWBOOT = true ]; then
     ui_print "Flashing boot image..."
     dd if=/tmp/boot.img of=/dev/block/platform/soc/7824900.sdhci/by-name/system || abort "Failed to flash boot image..."
 fi
 
-if $NEWANIM; then
+(if [ $NEWANIM = true ]; then
     ui_print "Moving new boot animation..."
-    mv -f /tmp/bootanimation.zip /system/media/bootanimation.zip || ui_print "Couldn't overwrite boot image, continuing..." && break
+    mv -f /tmp/bootanimation.zip /system/media/bootanimation.zip || ui_print "Couldn't overwrite boot image, continuing..." && exit
     chmod 0644 /system/media/bootanimation.zip || ui_print "Couldn't change permissions for boot animation..."
-fi
+fi)
 
-if $VZWAPPS=false; then
+if [ $VZWAPPS = false ]; then
     rm -rf /system/priv-app/ChargingApp-release || ui_print "Couldn't remove ChargingApp"
     rm -rf /system/priv-app/jumpstart-wear "Couldn't remove jumpstart"
     rm -rf /system/priv-app/MyVerizon "Couldn't remove MyVerizon"
