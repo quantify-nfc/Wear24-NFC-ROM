@@ -4,7 +4,7 @@ getprop("ro.product.device") == "dorado" || getprop("ro.product.name") == "dorad
 package_extract_file("install.sh", "/tmp/install.sh");
 package_extract_file("boot.img", "/tmp/boot.img");
 package_extract_file("bootanimation.zip", "/tmp/bootanimation.zip");
-set_metadata("/tmp/install.sh", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+set_metadata("/tmp/install.sh", "uid", 0, "gid", 0, "mode", 0755);
 
 ui_print(" ");
 ui_print("Target: verizon/dorado/dorado:7.1.1/N7G75P/3948116:user/release-keys");
