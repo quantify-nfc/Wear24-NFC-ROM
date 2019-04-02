@@ -41,21 +41,6 @@ NEWBOOTD=true
 NEWANIMD=true
 VZWAPPSD=true
 
-
-# Change this path to wherever the keycheck binary is located in your installer
-KEYCHECK=$/tmp/scripts/keycheck
-chmod 755 $KEYCHECK
-# get keycheck binary
-
-# do we need this
-keytest() {
-    ui_print "- Power Key Test -"
-    ui_print "   Press the Power Key:"
-    (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep KEY_POWER | /system/bin/grep " DOWN" > /tmp/events) || return 1
-    rm -f /tmp/events
-    return 0
-}
-
 choose() {
     #note from chainfire @xda-developers: getevent behaves weird when piped, and busybox grep likes that even less than toolbox/toybox grep
 
