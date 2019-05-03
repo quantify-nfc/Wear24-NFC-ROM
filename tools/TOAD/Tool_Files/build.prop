@@ -1,0 +1,2 @@
+ro.product.cpu.abilist=arm64
+ro.build.version.sdk=26

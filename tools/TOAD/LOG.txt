@@ -1,0 +1,6 @@
+--@2217 --- Deodexing Process Started
+
+TOAD Version: 3.0.0.4
+ABI detected as: "arm"
+API level detected as: "25"
+"25.bat" to be used

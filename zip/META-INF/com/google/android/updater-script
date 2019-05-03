@@ -1,0 +1,30 @@
+getprop("ro.product.device") == "dorado" || getprop("ro.product.name") == "dorado" ||
+    abort("This package is for \"dorado\" devices; this is a \"" + getprop("ro.product.device") + "\".");
+
+package_extract_file("install.sh", "/tmp/install.sh");
+package_extract_file("boot.img", "/tmp/boot.img");
+package_extract_file("bootanimation.zip", "/tmp/bootanimation.zip");
+set_metadata("/tmp/install.sh", "uid", 0, "gid", 0, "mode", 0755);
+
+ui_print(" ");
+ui_print("Target: verizon/dorado/dorado:7.1.1/N7G75P/3948116:user/release-keys");
+ui_print(" ");
+ui_print("Mounting system partition");
+mount("ext4", "EMMC", "/dev/block/platform/soc/7824900.sdhci/by-name/system", "/system") || 
+abort("Error JD-mountsys: Failed to mount system partition. Something has gone terribly, terribly wrong, and we swear it wasn't our fault.");
+
+ui_print("Writing system image unconditionally...");
+block_image_update("/dev/block/platform/soc/7824900.sdhci/by-name/system", package_extract_file("system.transfer.list"), "system.new.dat", "system.patch.dat") || 
+abort("Error JD-systemblock: Failed to write system image.");
+ui_print("System image written.");
+set_progress(0.3);
+
+ui_print("Starting installer script.");
+run_program("/tmp/install.sh") || abort("Error JD-installsh: The install script failed. Note what ui_prints were made.");
+
+ui_print("REMINDER: Magisk is not included. You need to flash/install it yourself to pass SafetyNet.");
+
+unmount("/system");
+
+# finish
+show_progress(1, 0);

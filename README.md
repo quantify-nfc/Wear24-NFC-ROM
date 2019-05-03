@@ -26,9 +26,7 @@ This repository has three main branches: `master`, `nfc` and `release`. These br
 
 ## Building
 
-`android-tools-fsutils` is needed for `make_ext4fs`!
-
-`sudo apt install android-tools-fsutils`
+You need Python 3.7+ installed to build the ROM. You can install this (on Ubuntu) using `sudo apt install python3.7`.
 
 ### Automatic
 

@@ -1,0 +1,8 @@
+ui_print(" ");
+ui_print(" This Zip Has Been");
+ui_print(" Created By");
+ui_print(" TOAD ");
+ui_print(" ");
+ui_print(" by Ticklefish");
+ui_print(" ");
+run_program("/sbin/busybox", "mount", "/system");
