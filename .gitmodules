@@ -1,0 +1,3 @@
+[submodule "tools/Android-Blob-Utility"]
+	path = tools/Android-Blob-Utility
+	url = https://github.com/JackpotClavin/Android-Blob-Utility
